@@ -77,4 +77,4 @@ def save_data(data):
 
 with sync_playwright() as playwright:
     data = run(playwright)
-
+save_data(data)
