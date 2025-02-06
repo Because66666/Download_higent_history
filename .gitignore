@@ -2,5 +2,5 @@
 *.pyc
 __pycache__/
 # 忽略本地配置文件
-.env
+my.env
 *.xlsx

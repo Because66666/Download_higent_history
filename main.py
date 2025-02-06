@@ -12,6 +12,18 @@ def load_env():
 def run(playwright: Playwright):
     data = []
     id_,key,app_name,day = load_env()
+    if not id_ or id_=='':
+        print('id未定义')
+        return
+    if not key or key=='':
+        print('key未定义')
+        return
+    if not app_name or app_name=='':
+        print('app_name未定义')
+        return
+    if not day or day=='':
+        print('日期范围未定义')
+        return
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
@@ -77,4 +89,5 @@ def save_data(data):
 
 with sync_playwright() as playwright:
     data = run(playwright)
-save_data(data)
+if data is not None:
+    save_data(data)
