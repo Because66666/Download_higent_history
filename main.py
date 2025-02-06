@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import date
 from dotenv import load_dotenv
 import os
+from tqdm import tqdm
 # 加载 .env 文件
 load_dotenv()
 
@@ -42,12 +43,17 @@ def run(playwright: Playwright):
     page.get_by_text("条/页").click()
     page.get_by_role("option", name="100 条/页").click()
     # 定位所有符合条件的 <tr> 元素
+    page.wait_for_load_state()
+    # page.pause()
+    page.wait_for_timeout(3000)
+    page.get_by_text('条/页').scroll_into_view_if_needed()
     tr_elements = page.locator("tr[data-testid='c-m-table-row']")
+    # print('一共有记录：',tr_elements.count(),'条。')
     # 遍历每个 <tr> 元素
-    for i in range(tr_elements.count()):
+    for i in tqdm(range(tr_elements.count())):
         tr = tr_elements.nth(i)
         span_text = tr.locator("td:nth-child(3) > .arco-table-cell > .arco-table-cell-wrap-value > .c-m-ellipsis").text_content()
-
+        # print(span_text)
         # 检查 <span> 元素的文本内容是否为 "0"
         if span_text.strip() != "0":
             # 点击 <div class="right"> 元素
